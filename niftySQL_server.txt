@@ -1,0 +1,22 @@
+DECLARE @Counter INT 
+DECLARE @MaxDupes INT 
+SET @Counter = 0 
+SET @MaxDupes = (select max(c) as TotalCount from ( 
+                    select COUNT(*) AS c  
+                    from tbl_Red where fieldid=(select FieldID from tbl_Blue where type='ABC' AND typeid=26 and name='idstring') 
+                    group by partID 
+                    having (COUNT(*) > 1) 
+                ) as ctab) 
+ 
+WHILE @Counter <= @MaxDupes 
+BEGIN 
+ 
+    delete from tbl_Red where ValueID in ( 
+                select Max(valueid) AS ValueID  
+                    from tbl_Red where fieldid=(select FieldID from tbl_Blue where type='ABC' AND typeid=26 and name='idstring') 
+                group by partID 
+                having (COUNT(*) > 1) 
+        ) 
+ 
+    SET @Counter += 1 
+END
