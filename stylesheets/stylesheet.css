@@ -277,8 +277,8 @@ Full-Width Styles
 }
 
 .example_image img {
-  width:200px;
-  height:80px;
+  max-width:180px;
+  max-height:80px;
   margin-left: 20px;
   margin-right: 20px;
 }
