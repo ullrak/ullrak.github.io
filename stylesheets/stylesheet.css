@@ -270,13 +270,19 @@ Full-Width Styles
   padding: 20px 10px;
   margin: 0 auto;
 }
-/*
-#right_SideBar {
-  float: right;
-  position: relative;
-  margin: 0 auto;
+
+.exmaple_image {
+  width: 100%;
+  height: 80px;
 }
-*/
+
+.exmaple_image img {
+  width:200px;
+  height:80px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 
 #forkme_banner {
   display: block;
