@@ -271,12 +271,12 @@ Full-Width Styles
   margin: 0 auto;
 }
 
-.exmaple_image {
+.example_image {
   width: 100%;
   height: 80px;
 }
 
-.exmaple_image img {
+.example_image img {
   width:200px;
   height:80px;
   margin-left: 20px;
