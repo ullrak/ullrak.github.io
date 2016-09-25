@@ -35,30 +35,35 @@
         <p>Experiment with game design, takes an image and creates a tilemap.  Reads the color of each pixel and maps that to tile information (sprite,collision,visibility)</p>
         <p>Later extended to the base of a game with Rudimentary menus, states and inputs</p>
         <div class="example_image"> <img src="images/mme_1.png"> <img src="images/mme_2.png"> <img src="images/mme_3.png"> <img src="images/mme_4.png"> </div>
+        <br />
 
         <h3>Retail and Warehouse Distribution Management System. "BeautyServ" </h3>
         <h4><a href="http://www.qbcbeautyserv.com">Demo site</a></h4>
         <ol>
           <li>Components
             <ul>
-              <li>webERP - Sysadmin, Full-Stack Developer (LAMP, JavaSCript, CSS), Team Lead
-                <p>Enterprise Resource Planning software used to manage warehouse order entry, purchase orders, warehouse management (pick lists, invoices, shipments) and payments.</p>
+              <li>webERP - Sysadmin, Full-Stack Developer (LAMP, JavaSCript, CSS), Team Lead <br />
+                Enterprise Resource Planning software used to manage warehouse order entry, purchase orders, warehouse management (pick lists, invoices, shipments) and payments.
               </li>
 
-              <li>OSPOS - Sysadmin, Full-Stack Developer (MVC, codeignitor, LAMP), Team Lead
+              <li>OSPOS - Sysadmin, Full-Stack Developer (MVC, codeignitor, LAMP), Team Lead <br />
                 <p>Point of Sale system for retail locations that augmented the whole sale distributor using webERP<p>
               </li>
 
-              <li>Custom Mobile Order Entry (PHP, JQuery ,CSS, BootStrap)
-                <p>Used by traveling salesman to take orders, sometimes with payment, that automatically entered into corporates sytem and printed pick tickets in a warehouse</p>
+              <li>Custom Mobile Order Entry (PHP, JQuery ,CSS, BootStrap) <br />
+                Used by traveling salesman to take orders, sometimes with payment, that automatically entered into corporates sytem and printed pick tickets in a warehouse
               </li>
             </ul>
           </li>
 
           <li>Accomplishments
-            <ol type="I">
+            <ol type="i">
               <li>Integrated the two systems database architecture into one and modified the backends to use the single source.</li>
               <li>Integrated Credit Card processing into system. Implemented encrytption and handled user input pipeline to REST API of processing company.</li>
+              <li>Designed and Implemented a system for retail stores to continue business after loss of internet.  
+                Entailed creating a standalone server to run on local network PC that ran automatic product/customer syncs and that would push local sales to corporate.
+                Modified DB drivers so that when a connection to main server couldn't be made a local one would be used, checking for and resolving sync conflicts.
+                locla system would routinely check for local orders and if any were detected would push to coorporate if a connection could be made.</li>
               <li>Designed and Implemented Gift Card system into all components.</li>
               <li>Designed and Implemented Coupon system into all components.</li>
               <li>Designed and Implemented Warehouse Transfer fast entry system into retail store system. (for transferring goods within company)</li>
