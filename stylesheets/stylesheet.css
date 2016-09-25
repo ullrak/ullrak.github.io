@@ -233,10 +233,10 @@ dl p {
 }
 
 hr {
-  height: 6px;
-  margin-bottom: 15px;
+  height: 4px;
+  margin-bottom: 40px;
   border: none;
-  background: url('../images/bg_hr.png') repeat-x center;
+  background: black;
 }
 
 table {
