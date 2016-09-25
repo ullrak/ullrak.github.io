@@ -208,7 +208,13 @@ ul {
 
 ol {
   list-style-position: inside;
-  /*list-style: decimal;*/
+  list-style: decimal;
+  padding-left: 20px;
+}
+
+ol ol {
+  list-style-position: inside;
+  list-style: lower-roman;
   padding-left: 20px;
 }
 
