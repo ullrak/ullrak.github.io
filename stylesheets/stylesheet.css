@@ -233,8 +233,8 @@ dl p {
 }
 
 hr {
-  height: 1px;
-  margin-bottom: 5px;
+  height: 6px;
+  margin-bottom: 15px;
   border: none;
   background: url('../images/bg_hr.png') repeat-x center;
 }
