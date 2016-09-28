@@ -1,0 +1,112 @@
+Private Const Data_Blue_Row = 1
+Private Const Data_Reds_Row = 2
+Private Const Data_Applied_Col = 4
+Private Const Data_Start_Col = 3
+Private Const Data_Rows_Col = 2
+
+Private Const Data_Final_Start_Col = 5
+Private Const Data_Final_End_Col = 6
+
+
+Private Sub Apply_Data()
+    Dim Blues_Applied As Boolean
+    Dim Blues_Start As Integer
+    Dim Blues_Rows As Integer
+    Dim Blues_End As Integer
+    
+    Dim Reds_Applied As Boolean
+    Dim Reds_Start As Integer
+    Dim Reds_Rows As Integer
+    
+    'Cell used to toggle if the data should be pushed into the table, allows for toggle without entering visual basic
+    Blues_Applied = Worksheets("data").Cells(Data_Blue_Row, Data_Applied_Col)
+    Blues_Start = Worksheets("data").Cells(Data_Blue_Row, Data_Start_Col)
+    Blues_Rows = Worksheets("data").Cells(Data_Blue_Row, Data_Rows_Col)
+    
+    If Blues_Rows > 0 And Blues_Applied = False Then
+        'get the table object and moves the data from the unformatted sheet into the table object
+        Set BluesTable = Worksheets("Final Format").ListObjects("Blues")
+        Blues_End = Blues_Start + Blues_Rows - 1
+        
+        'Add a first row to the table to start excel formattingfor subsequent rows
+        BluesTable.DataBodyRange.Cells(1, 1).Value = Worksheets("data").Cells(Blues_Start, 1)
+        BluesTable.DataBodyRange.Cells(1, 2).Value = Worksheets("data").Cells(Blues_Start, 2)
+        BluesTable.DataBodyRange.Cells(1, 3).Value = Worksheets("data").Cells(Blues_Start, 3)
+        BluesTable.DataBodyRange.Cells(1, 4).Value = Worksheets("data").Cells(Blues_Start, 4)
+        BluesTable.DataBodyRange.Cells(1, 5).Value = Worksheets("data").Cells(Blues_Start, 5)
+        BluesTable.DataBodyRange.Cells(1, 6).Value = Worksheets("data").Cells(Blues_Start, 6)
+        BluesTable.DataBodyRange.Cells(1, 7).Value = Worksheets("data").Cells(Blues_Start, 7)
+        BluesTable.DataBodyRange.Cells(1, 8).Value = Worksheets("data").Cells(Blues_Start, 8)
+        BluesTable.DataBodyRange.Cells(1, 9).Value = Worksheets("data").Cells(Blues_Start, 9)
+        BluesTable.DataBodyRange.Cells(1, 11).Value = Worksheets("data").Cells(Blues_Start, 11)
+        BluesTable.DataBodyRange.Cells(1, 12).Value = Worksheets("data").Cells(Blues_Start, 12)
+        
+        Dim i As Integer
+        
+        For i = (Blues_Start + 1) To Blues_End
+            Dim oNewRow As ListRow
+            Set oNewRow = BluesTable.ListRows.Add(AlwaysInsert:=True)
+            oNewRow.Range.Cells(1, 1).Value = Worksheets("data").Cells(i, 1)
+            oNewRow.Range.Cells(1, 2).Value = Worksheets("data").Cells(i, 2)
+            oNewRow.Range.Cells(1, 3).Value = Worksheets("data").Cells(i, 3)
+            oNewRow.Range.Cells(1, 4).Value = Worksheets("data").Cells(i, 4)
+            oNewRow.Range.Cells(1, 5).Value = Worksheets("data").Cells(i, 5)
+            oNewRow.Range.Cells(1, 6).Value = Worksheets("data").Cells(i, 6)
+            oNewRow.Range.Cells(1, 7).Value = Worksheets("data").Cells(i, 7)
+            oNewRow.Range.Cells(1, 8).Value = Worksheets("data").Cells(i, 8)
+            oNewRow.Range.Cells(1, 9).Value = Worksheets("data").Cells(i, 9)
+            oNewRow.Range.Cells(1, 11).Value = Worksheets("data").Cells(i, 11)
+            oNewRow.Range.Cells(1, 12).Value = Worksheets("data").Cells(i, 12)
+        Next i
+        
+        Worksheets("data").Cells(Data_Blue_Row, Data_Applied_Col) = True
+    End If
+    
+    Reds_Applied = Worksheets("data").Cells(Data_Reds_Row, Data_Applied_Col)
+    Reds_Start = Worksheets("data").Cells(Data_Reds_Row, Data_Start_Col)
+    Reds_Rows = Worksheets("data").Cells(Data_Reds_Row, Data_Rows_Col)
+    
+    If Reds_Rows > 0 And Reds_Applied = False Then
+        Set RedsTable = Worksheets("Final Format").ListObjects("Reds")
+        Reds_End = Reds_Start + Reds_Rows - 1
+        
+        RedsTable.DataBodyRange.Cells(1, 1).Value = Worksheets("data").Cells(Reds_Start, 1)
+        RedsTable.DataBodyRange.Cells(1, 2).Value = Worksheets("data").Cells(Reds_Start, 2)
+        RedsTable.DataBodyRange.Cells(1, 3).Value = Worksheets("data").Cells(Reds_Start, 3)
+        RedsTable.DataBodyRange.Cells(1, 4).Value = Worksheets("data").Cells(Reds_Start, 4)
+        RedsTable.DataBodyRange.Cells(1, 5).Value = Worksheets("data").Cells(Reds_Start, 5)
+        RedsTable.DataBodyRange.Cells(1, 6).Value = Worksheets("data").Cells(Reds_Start, 6)
+        RedsTable.DataBodyRange.Cells(1, 7).Value = Worksheets("data").Cells(Reds_Start, 7)
+        RedsTable.DataBodyRange.Cells(1, 8).Value = Worksheets("data").Cells(Reds_Start, 8)
+        RedsTable.DataBodyRange.Cells(1, 9).Value = Worksheets("data").Cells(Reds_Start, 9)
+        RedsTable.DataBodyRange.Cells(1, 11).Value = Worksheets("data").Cells(Reds_Start, 11)
+        RedsTable.DataBodyRange.Cells(1, 12).Value = Worksheets("data").Cells(Reds_Start, 12)
+        
+        Dim j As Integer
+        
+        For j = (Reds_Start + 1) To Reds_End
+            Dim rNewRow As ListRow
+            Set rNewRow = RedsTable.ListRows.Add(AlwaysInsert:=True)
+            rNewRow.Range.Cells(1, 1).Value = Worksheets("data").Cells(j, 1)
+            rNewRow.Range.Cells(1, 2).Value = Worksheets("data").Cells(j, 2)
+            rNewRow.Range.Cells(1, 3).Value = Worksheets("data").Cells(j, 3)
+            rNewRow.Range.Cells(1, 4).Value = Worksheets("data").Cells(j, 4)
+            rNewRow.Range.Cells(1, 5).Value = Worksheets("data").Cells(j, 5)
+            rNewRow.Range.Cells(1, 6).Value = Worksheets("data").Cells(j, 6)
+            rNewRow.Range.Cells(1, 7).Value = Worksheets("data").Cells(j, 7)
+            rNewRow.Range.Cells(1, 8).Value = Worksheets("data").Cells(j, 8)
+            rNewRow.Range.Cells(1, 9).Value = Worksheets("data").Cells(j, 9)
+            rNewRow.Range.Cells(1, 11).Value = Worksheets("data").Cells(j, 11)
+            rNewRow.Range.Cells(1, 12).Value = Worksheets("data").Cells(j, 12)
+        Next j
+    
+        Worksheets("data").Cells(Data_Reds_Row, Data_Applied_Col) = True
+    End If
+    
+End Sub
+
+
+Private Sub Workbook_Open()
+    Apply_Data
+    Application.CalculateFull
+End Sub

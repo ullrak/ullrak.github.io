@@ -1,0 +1,159 @@
+<!---- _text is sent into this module after being pulled form the DB or a page --->
+<cfset _htmlBuild = "">
+<cfset _linesArray = ListToArray(trim(_text),"#chr(13)##chr(10)#")>
+<cfset _lineTotal = ArrayLen(_linesArray)>
+<cfset _countController = 1>
+
+<cfloop index="currentLine" from="1" to="#_lineTotal#">
+
+    <!--- Work around for inability to set the loop index manually. Setting the _countController ahead skips the lines inbetween that have already been processed --->
+    <cfif (currentLine NEQ _countController) and (_countController GT currentLine)>
+        <cfcontinue>
+    </cfif>
+
+    <cfset _line = _linesArray[currentLine]>
+    <cfset _lineDelim = left(_line,1)>
+
+    <cfswitch expression="#_lineDelim#">
+
+        <cfcase value="*">
+            <cfset _parsedList = parseListHTML(linesArray="#_linesArray#", delim="*", listTypeTag="<ul>", listEndTag="</ul>", lineIndex="#currentLine#", nestLevel=1)>
+            <cfset _htmlBuild = _htmlBuild & _parsedList[1]>
+            <cfset _countController = _parsedList[2]>
+        </cfcase>
+
+        <cfcase value="+">
+            <cfset _parsedList = parseListHTML(linesArray="#_linesArray#", delim="+", listTypeTag="<ol>", listEndTag="</ol>", lineIndex="#currentLine#", nestLevel=1)>
+            <cfset _htmlBuild = _htmlBuild & _parsedList[1]>
+            <cfset _countController = _parsedList[2]>
+        </cfcase>
+
+        <cfcase value="=">
+            <cfset _parsedList = parseListHTML(linesArray="#_linesArray#", delim="=", listTypeTag="<ol type='A'>", listEndTag="</ol>", lineIndex="#currentLine#", nestLevel=1)>
+            <cfset _htmlBuild = _htmlBuild & _parsedList[1]>
+            <cfset _countController = _parsedList[2]>
+        </cfcase>
+
+        <cfcase value="%">
+            <cfset _parsedList = parseListHTML(linesArray="#_linesArray#", delim="%", listTypeTag="<ol type='a'>", listEndTag="</ol>", lineIndex="#currentLine#", nestLevel=1)>
+            <cfset _htmlBuild = _htmlBuild & _parsedList[1]>
+            <cfset _countController = _parsedList[2]>
+        </cfcase>
+
+        <cfcase value="&">
+            <cfset _parsedList = parseListHTML(linesArray="#_linesArray#", delim="&", listTypeTag="<ol type='I'>", listEndTag="</ol>", lineIndex="#currentLine#", nestLevel=1)>
+            <cfset _htmlBuild = _htmlBuild & _parsedList[1]>
+            <cfset _countController = _parsedList[2]>
+        </cfcase>
+
+        <cfcase value="^">
+            <cfset _parsedList = parseListHTML(linesArray="#_linesArray#", delim="^", listTypeTag="<ol type='i'>", listEndTag="</ol>", lineIndex="#currentLine#", nestLevel=1)>
+            <cfset _htmlBuild = _htmlBuild & _parsedList[1]>
+            <cfset _countController = _parsedList[2]>
+        </cfcase>
+
+        <cfdefaultcase>
+            <cfif Find("##",_line) GT 0>
+                <cfset _line = htmleditformat(_line)>
+                <cfset _line = Replace( _line, "##", "</p><p>" )>
+                <cfset _htmlBuild = _htmlBuild & "<p>" & _line & "</p>">
+            <cfelse>
+                <cfset _htmlBuild = _htmlBuild & "<p>" & htmleditformat(_line) & "</p>">
+            </cfif>
+        </cfdefaultcase>
+
+    </cfswitch>
+
+    <cfset _countController = _countController+1>
+</cfloop>
+
+<!--- CONVERT TRADEMARKS (©, ®, ™) --->
+<cfscript>
+    _htmlBuild = ReReplaceNoCase(_htmlBuild,"\[C]|\(C\)" ,"&copy;", "ALL");
+    _htmlBuild = ReReplaceNoCase(_htmlBuild,"\[R]|\(R\)" ,"&reg;", "ALL");
+    _htmlBuild = ReReplaceNoCase(_htmlBuild,"\[TM]|\(TM\)" ,"&trade;", "ALL");
+</cfscript>
+
+<cfset caller[attributes.variable] = _htmlBuild>
+
+
+
+<cffunction name="parseListHTML" output="false" returnType="array">
+	<cfargument name="linesArray" type="array" required="true">
+	<cfargument name="delim" type="string" required="true">
+	<cfargument name="listTypeTag" type="string" required="true">
+	<cfargument name="listEndTag" type="string" required="true">
+	<cfargument name="lineIndex" type="numeric" required="true">
+	<cfargument name="nestLevel" type="numeric" required="true">
+
+	<cfset var _listHTML = "#arguments.listTypeTag#">
+	<cfset var _jumpToLine = lineIndex>
+	<cfset var _lineController = arguments.lineIndex>
+
+	<cfset var _delimiterList = "*,+,=,%,&,^">
+	<cfset var _nestDelimiterList = "">
+
+	<cfloop list="#_delimiterList#" index="_bnDelim">
+
+		<cfset var _nestDelim = "">
+		<cfloop index="_buildDelim" from="1" to="#(arguments.nestLevel+1)#">
+			<cfset _nestDelim = _nestDelim & _bnDelim>
+		</cfloop>
+		<cfset _nestDelimiterList = ListAppend(_nestDelimiterList,_nestDelim)>
+
+	</cfloop>
+
+	<cfloop index="lineTick" from="#arguments.lineIndex#" to="#ArrayLen(arguments.linesArray)#">
+
+		<cfif lineTick NEQ _lineController and (_lineController GT lineTick)>
+			<cfcontinue>
+		</cfif>
+
+		<cfset var _lineText = arguments.linesArray[lineTick]>
+		<cfset var _lineDelimiter = left(_lineText,arguments.nestLevel)>
+		<cfset var _lineNester = left(_lineText,(arguments.nestLevel+1))>
+
+		<cfset _jumpToLine = (lineTick-1)>
+
+		<cfif ListFind(_nestDelimiterList,_lineNester) NEQ 0>
+
+			<cfset var _delimSingle = left(_lineNester,1)>
+			<cfswitch expression="#left(_lineNester,1)#">
+				<cfcase value="*"> <cfset var _nextTagType = "<ul>"> <cfset var _nextEndTag = "</ul>"> </cfcase>
+				<cfcase value="+"> <cfset var _nextTagType = "<ol>"> <cfset var _nextEndTag = "</ol>"> </cfcase>
+				<cfcase value="="> <cfset var _nextTagType = "<ol type='A'>"> <cfset var _nextEndTag = "</ol>"> </cfcase>
+				<cfcase value="%"> <cfset var _nextTagType = "<ol type='a'>"> <cfset var _nextEndTag = "</ol>"> </cfcase>
+				<cfcase value="&"> <cfset var _nextTagType = "<ol type='I'>"> <cfset var _nextEndTag = "</ol>"> </cfcase>
+				<cfcase value="^"> <cfset var _nextTagType = "<ol type='i'>"> <cfset var _nextEndTag = "</ol>"> </cfcase>
+			</cfswitch>
+			<cfset var _parseNestedList = parseListHTML(linesArray="#arguments.linesArray#", delim="#_lineNester#", listTypeTag="#_nextTagType#", listEndTag="#_nextEndTag#", lineIndex="#lineTick#", nestLevel="#(arguments.nestLevel+1)#")>
+			<cfset _listHTML = _listHTML & _parseNestedList[1]>
+			<cfset _lineController = _parseNestedList[2]>
+			<cfset _jumpToLine = lineTick>
+
+		<cfelseif _lineDelimiter EQ arguments.delim>
+			<cfset _formLineText = htmleditformat(right(_lineText,(Len(_lineText) - arguments.nestLevel)) )>
+			<cfif Find("##",_formLineText) GT 0>
+				<cfset _formLineText = Replace( _formLineText, "##", "</p><p>" )>
+				<cfset _listHTML = _listHTML & "<li><p>#_formLineText# </p></li>">
+			<cfelse>
+				<cfset _listHTML = _listHTML & "<li><p>#htmleditformat(_formLineText)# </p></li>">
+			</cfif>
+
+			<cfset _jumpToLine = lineTick>
+
+		<cfelse>
+			<cfbreak>
+		</cfif>
+
+		<cfset _lineController = _lineController+1>
+	</cfloop>
+
+	<cfset _listHTML = _listHTML & "#arguments.listEndTag#">
+	<cfset var parserData = ArrayNew(1)>
+	<cfset parserData[1] = _listHTML>
+	<cfset parserData[2] = _jumpToLine>
+
+	<cfreturn parserData>
+
+</cffunction>
