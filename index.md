@@ -1,14 +1,4 @@
-<!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
 
-          <h1 id="project_title">My Portfolio. Welcome!</h1>
-
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
 
         <h3>TrytomakeaMapengine (C#, VisualStudio, XNA)</h3>
@@ -79,4 +69,3 @@
         <br /><a id="vbaLink"  href="niftyVBA.txt"> Fun With VBA </a>
 
       </section>
-    </div>
